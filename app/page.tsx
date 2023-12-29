@@ -160,7 +160,7 @@ export default function Home() {
 
   return (
     <div className=''>
-      <section className='border flex flex-col items-center justify-center fixed bottom-0 left-0 bg-black w-screen p-2'>
+      <section className='border border-black dark:border-white flex flex-col items-center justify-center fixed bottom-0 left-0 bg-white dark:bg-black w-screen p-2'>
         <SelectCinema cinemaKey={cinema} changeCinema={(value: string) => setCinema(value)} />
       </section>
 
@@ -176,9 +176,9 @@ export default function Home() {
         </div> */}
 
 
-        <div className="grid grid-cols-1 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {movies && movies.length > 0 && movies.map((movie: any) => (
-            <div onClick={() => addSelectedMovie(movie)} className={`border rounded p-2 flex gap-2 ${isMovieSelected(movie) ? 'border-green-600' : ''}`} key={movie.Id}>
+            <div onClick={() => addSelectedMovie(movie)} className={`border border-neutral-500 dark:border-neutral-300 rounded p-2 flex gap-2 ${isMovieSelected(movie) ? 'border-green-600' : ''}`} key={movie.Id}>
                 <img className='object-cover' src={movie.Poster} alt={movie.Title} />
               
               <div className="flex flex-col p-1 gap-2">
@@ -189,7 +189,7 @@ export default function Home() {
                         <p className='mb-2 text-xs'>{format.Name}</p>
                         <div className="flex gap-2">
                           {format.Showtimes.map((showtime: any) => (
-                            <span key={showtime.Time} className='border rounded-full py-1 px-2'>
+                            <span key={showtime.Time} className='border border-neutral-500 dark:border-neutral-300 rounded-full py-1 px-2 text-sm'>
                               {showtime.Time}
                             </span>
                           ))}
