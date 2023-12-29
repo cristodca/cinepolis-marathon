@@ -39,3 +39,18 @@ export const getMoviesFromCinemaAndDate = async (cinema, date) => {
     console.error('Error al obtener información para cinepolis:', error);
   }
 };
+
+export const getCinemas = async () => {
+  try {
+    // Obtener la información JSON usando await
+    const cinepolis = await getJsonInformation();
+
+    // Hacer algo con la información obtenida
+    const cinemas = Object.entries(cinepolis.d.Locations).map(([key, value]) => ({ Key: key, Name: value }))
+    
+    return cinemas
+  } catch (error) {
+    // Manejar errores aquí si es necesario
+    console.error('Error al obtener información para cinepolis:', error);
+  }
+}

@@ -2,6 +2,9 @@
 import { useEffect, useState } from 'react'
 import { getMoviesFromCinemaAndDate } from './scrap.js'
 import { get } from 'http'
+import { Cinema } from '@/interfaces/Cinema.js'
+import { MovieOrderedByHour } from '@/interfaces/MovieOrderedByHour.js'
+import SelectCinema from '@/components/SelectCinema'
 
 async function getMoviesFromCinemaAndDateAsync(cinema: string, date: string) {
   const movies = await getMoviesFromCinemaAndDate(cinema, date)
@@ -10,20 +13,21 @@ async function getMoviesFromCinemaAndDateAsync(cinema: string, date: string) {
 }
 
 export default function Home() {
-  const [movies, setMovies] = useState<any>([])
-  const [selectedMovies, setSelectedMovies] = useState<any>([])
-  const [orderedMovies, setOrderedMovies] = useState<any>([])
-  const [currentFinishTime, setCurrentFinishTime] = useState<any>('00:00')
+  const [cinema, setCinema] = useState<string>('cinepolis-centro-magno')
+  const [movies, setMovies] = useState<Cinema[]>([])
+  const [selectedMovies, setSelectedMovies] = useState<Cinema[]>([])
+  const [orderedMovies, setOrderedMovies] = useState<MovieOrderedByHour[]>([])
+  const [currentFinishTime, setCurrentFinishTime] = useState<string>('00:00')
   
   useEffect(() => {
     async function getMovies() {
-      const movies = await getMoviesFromCinemaAndDateAsync('cinepolis-centro-magno', '01 enero')
+      const movies = await getMoviesFromCinemaAndDateAsync(cinema, '31 diciembre')
 
       setMovies(movies)
     }
 
     getMovies()
-  }, [])
+  }, [cinema])
 
   const addSelectedMovie = (movie: any) => {
     setSelectedMovies((prevState: any) => (
@@ -39,7 +43,7 @@ export default function Home() {
 
   function ordenarFuncionesPorHora(funciones: any[]) {
     // Función de comparación para ordenar por hora de inicio
-    const allFormats: any[] = []
+    const allFormats: MovieOrderedByHour[] = []
     
     funciones.forEach((movieFormats: any) => {
       movieFormats.Formats.forEach((showtimes: any) => {
@@ -155,31 +159,34 @@ export default function Home() {
   }
 
   return (
-    <div className='flex'>
-      <main className='container border p-8'>
-        <div className="flex gap-4 mb-8 max-w-full overflow-x-auto">
+    <div className=''>
+      <section className='border flex flex-col items-center justify-center fixed bottom-0 left-0 bg-black w-screen p-2'>
+        <SelectCinema cinemaKey={cinema} changeCinema={(value: string) => setCinema(value)} />
+      </section>
+
+      <main className='container p-4 mx-auto'>
+        {/* <div className="flex items-center justify-start">
           {
             movies && movies.length > 0 && movies.map((movie: any) => (
-              <div onClick={() => addSelectedMovie(movie)} className={`border rounded p-4 ${isMovieSelected(movie) ? 'border-green-600' : ''}`} key={movie.Id}>
+              <div onClick={() => addSelectedMovie(movie)} className={`border line-clamp-1 rounded p-4 ${isMovieSelected(movie) ? 'border-green-600' : ''}`} key={movie.Id}>
                 {movie.Title}
               </div>
             ))
           }
-        </div>
+        </div> */}
 
 
-        <div className="grid grid-cols-1 gap-8">
-          {selectedMovies && selectedMovies.length > 0 && selectedMovies.map((movie: any) => (
-            <div className='border rounded p-4 flex gap-2' key={movie.Id}>
-              <div>
-                <img src={movie.Poster} alt={movie.Title} />
-              </div>
-              <div className="flex flex-col p-2 gap-2">
-                <h2 className='text-2xl font-bold'>({movie.RunTime}) - {movie.Title}</h2>
+        <div className="grid grid-cols-1 gap-4">
+          {movies && movies.length > 0 && movies.map((movie: any) => (
+            <div onClick={() => addSelectedMovie(movie)} className={`border rounded p-2 flex gap-2 ${isMovieSelected(movie) ? 'border-green-600' : ''}`} key={movie.Id}>
+                <img className='object-cover' src={movie.Poster} alt={movie.Title} />
+              
+              <div className="flex flex-col p-1 gap-2">
+                <h2 className=' text-lg font-bold line-clamp-2'>({movie.RunTime}) - {movie.Title}</h2>
                   {
                     movie.Formats.map((format: any) => (
-                      <div key={format.Name} className='mb-4'>
-                        <p className='mb-2'>{format.Name}</p>
+                      <div key={format.Name} className='mb-4 overflow-hidden'>
+                        <p className='mb-2 text-xs'>{format.Name}</p>
                         <div className="flex gap-2">
                           {format.Showtimes.map((showtime: any) => (
                             <span key={showtime.Time} className='border rounded-full py-1 px-2'>
