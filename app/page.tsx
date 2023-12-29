@@ -178,11 +178,11 @@ export default function Home() {
                 <h2 className='text-2xl font-bold'>({movie.RunTime}) - {movie.Title}</h2>
                   {
                     movie.Formats.map((format: any) => (
-                      <div className='mb-4'>
+                      <div key={format.Name} className='mb-4'>
                         <p className='mb-2'>{format.Name}</p>
                         <div className="flex gap-2">
                           {format.Showtimes.map((showtime: any) => (
-                            <span className='border rounded-full py-1 px-2'>
+                            <span key={showtime.Time} className='border rounded-full py-1 px-2'>
                               {showtime.Time}
                             </span>
                           ))}
