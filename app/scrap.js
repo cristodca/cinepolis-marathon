@@ -26,12 +26,8 @@ export const getMoviesFromCinemaAndDate = async (cinema, date) => {
 
     // Hacer algo con la información obtenida
     const cinemaInformation = cinepolis.d.Cinemas.find(c => c.Key === cinema);
-    
-    console.log(cinema, cinemaInformation);
 
     const dateMovies = cinemaInformation.Dates.find(m => m.ShowtimeDate === date);
-
-    console.log('peliculas del dia', dateMovies)
 
     return dateMovies.Movies
   } catch (error) {
@@ -49,6 +45,23 @@ export const getCinemas = async () => {
     const cinemas = Object.entries(cinepolis.d.Locations).map(([key, value]) => ({ Key: key, Name: value }))
     
     return cinemas
+  } catch (error) {
+    // Manejar errores aquí si es necesario
+    console.error('Error al obtener información para cinepolis:', error);
+  }
+}
+
+export const getDatesFromCinema = async (cinema) => {
+  try {
+    // Obtener la información JSON usando await
+    const cinepolis = await getJsonInformation();
+
+    // Hacer algo con la información obtenida
+    const cinemaInformation = cinepolis.d.Cinemas.find(c => c.Key === cinema);
+    
+    const dates = cinemaInformation.Dates.map((d) => d.ShowtimeDate);
+
+    return dates
   } catch (error) {
     // Manejar errores aquí si es necesario
     console.error('Error al obtener información para cinepolis:', error);

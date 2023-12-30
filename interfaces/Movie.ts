@@ -13,4 +13,5 @@ export interface Movie {
   Gender?: string;
   Distributor?: string;
   Order?: number;
+  Formats?: any[];
 }

@@ -25,3 +25,12 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-md border-0 text-sm;
+  }
+  .btn-dark-mode {
+    @apply bg-black dark:bg-white text-white dark:text-black;
+  }
+}

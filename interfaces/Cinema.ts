@@ -6,7 +6,7 @@ export interface Cinema {
   CityKey?: string;
   CityName?: string;
   Status?: number;
-  Id?: number;
+  Id: number;
   Dates?: MovieDate[];
   VistaId?: string;
   IsPresale?: boolean;

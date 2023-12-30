@@ -27,9 +27,16 @@ const SelectCinema = ({ cinemaKey, changeCinema }: ComponentProps) => {
   }, []);
 
   return (
-    <select className="bg-white dark:bg-black border rounded p-2" onChange={(event) => changeCinema(event.target.value)}>
+    <select
+      className="bg-white dark:bg-black border rounded p-2"
+      value={cinemaKey}
+      onChange={(event) => changeCinema(event.target.value)}
+    >
       {cinemas.map((cinema: any) => (
-        <option key={cinema.Key} value={cinema.Key} selected={cinema.Key === cinemaKey}>
+        <option
+          key={cinema.Key}
+          value={cinema.Key}
+        >
           {cinema.Name}
         </option>
       ))}
